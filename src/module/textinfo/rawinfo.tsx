@@ -35,7 +35,7 @@ export function RawInfo(){
     },[screenOrientation])
 
 
-    return <div className={style}
-
-    ></div>
+    return <div className={style}>
+        {JSON.stringify(APIresponse)}
+    </div>
 }
