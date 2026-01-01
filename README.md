@@ -1,3 +1,5 @@
+# Still Not Finished to implement.
+
 # Stable diffusion webui infomation panel
  While i use Stable diffusion WebUI from [AUR (en) - stable-diffusion-webui](https://www.nyanmo.info/posts/linux/stablediffusionwebui/). That works but i find that i can't see the progress when i accidentally close the WebUI. Later, i find an entry point "/sdapi/v1/progress" that return JSON response about the progress. So i decided to create my own progress viewer rely on the API possibly disappear in the future.
 
