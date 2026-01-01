@@ -20,4 +20,13 @@ export function saveSettings(data:MainData){
     document.cookie = "stablediffusioninfomationpanelsettings=" + JSON.stringify(data.network)
 }
 
-
+export function findOrientation(){
+    const ratio = 1.0 * window.innerWidth / window.innerHeight
+    // ratio bigger than 1 -> horizontal
+    // ratio smaller than 1 -> vertical
+    if(ratio >= 1){
+        return "Horizontal"
+    }else{
+        return "Vertical"
+    }
+}

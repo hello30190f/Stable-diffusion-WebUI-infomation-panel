@@ -4,7 +4,7 @@ import { Header }   from './module/header'
 import { MainInfo } from './module/mainInfo'
 import { Sidebar }  from './module/sidebar'
 import { useEffect, useRef } from 'react'
-import { readSettings, saveSettings } from './module/helper'
+import { findOrientation, readSettings, saveSettings } from './module/helper'
 
 // https://domain.name.or.ip.address/sdapi/v1/progress
 // {
@@ -46,10 +46,11 @@ type StableDiffusionWebUIapiJSON = {
 
 
 export type MainData = {
-  JSONdata        : StableDiffusionWebUIapiJSON | null,   // automaticly update 
-  sidebar         : boolean,                              // false -> close, true -> open
-  view            : string,                                // "main" or "raw" -> change text info
-  entryPointPath  : string,
+  JSONdata            : StableDiffusionWebUIapiJSON | null,   // automaticly update 
+  sidebar             : boolean,                              // false -> close, true -> open
+  view                : string,                                // "main" or "raw" -> change text info
+  entryPointPath      : string,
+  screenOrientation   : "Vertical" | "Horizontal"
   network:{
     updateInterval  : number, // sec
     ipAddress       : string, 
@@ -59,10 +60,11 @@ export type MainData = {
 }
 
 export const useMainData = create<MainData>(() => ({
-  JSONdata        : null,
-  sidebar         : false,
-  view            : "main",
-  entryPointPath  : "/sdapi/v1/progress",
+  JSONdata          : null,
+  sidebar           : false,
+  view              : "main",
+  screenOrientation : "Horizontal",
+  entryPointPath    : "/sdapi/v1/progress",
   // try to connect local WebUI by default.
   network:{
     updateInterval  : 1.0 / 2, // 2 FPS 
@@ -131,6 +133,20 @@ function App() {
   useEffect(() => {
     saveSettings(getMainData())
   },[netwrok])
+  useEffect(() => {
+    function updateScreenInfo(){
+      const result = findOrientation()
+      if(result != getMainData().screenOrientation){
+        setMainData({screenOrientation:result})
+      }
+    }
+
+    addEventListener("resize",updateScreenInfo)
+    return () => {
+      removeEventListener("resize",updateScreenInfo)
+    }
+  },[])
+
     
   return <div>
     <MainInfo></MainInfo>
