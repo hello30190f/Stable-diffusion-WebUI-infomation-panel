@@ -1,10 +1,11 @@
 import './App.css'
-import { create } from 'zustand'
-import { Header } from './module/header'
+import { create }   from 'zustand'
+import { Header }   from './module/header'
 import { MainInfo } from './module/mainInfo'
-import { Sidebar } from './module/sidebar'
+import { Sidebar }  from './module/sidebar'
+import { useRef } from 'react'
 
-
+// https://domain.name.or.ip.address/sdapi/v1/progress
 // {
 //     "progress": 0.9414285714285715,
 //     "eta_relative": 73.19720708907812,
@@ -44,28 +45,74 @@ type StableDiffusionWebUIapiJSON = {
 
 
 type MainData = {
-  JSONdata: StableDiffusionWebUIapiJSON | null,  // automaticly update 
-  sidebar: boolean,         // false -> close, true -> open
-  view:string,              // "main" or "raw" -> change text info
+  JSONdata        : StableDiffusionWebUIapiJSON | null,   // automaticly update 
+  sidebar         : boolean,                              // false -> close, true -> open
+  view            : string,                                // "main" or "raw" -> change text info
+  entryPointPath  : string,
   network:{
-    updateInterval: number, // sec
-    ipAddress: string, 
-    port: number
+    updateInterval  : number, // sec
+    ipAddress       : string, 
+    port            : number, 
+    protocol        : "http" | "https"
   }
 }
 
-export const useMainData = create<MainData>((get,set) => ({
-  JSONdata: null,
-  sidebar: false,
-  view: "main",
+export const useMainData = create<MainData>(() => ({
+  JSONdata        : null,
+  sidebar         : false,
+  view            : "main",
+  entryPointPath  : "/sdapi/v1/progress",
   network:{
-    updateInterval: 1.0 / 10, // 10 FPS 
-    ipAddress: "localhost",
-    port:7860
+    updateInterval  : 1.0 / 2, // 2 FPS 
+    ipAddress       : "localhost",
+    port            : 7860,
+    protocol        : "https"
   }
 }))
 
+// 
+async function useAutoUpdater(
+  getMainData: () => MainData,
+  setMainData: {
+    (partial: MainData | Partial<MainData> | ((state: MainData) => MainData | Partial<MainData>), replace?: false): void;
+    (state: MainData | ((state: MainData) => MainData), replace: true): void;
+  }
+){
+  const protocol    = getMainData().network.protocol
+  const ipAddress   = getMainData().network.ipAddress
+  const port        = String(getMainData().network.port)
+  const entryPoint  = getMainData().entryPointPath
+
+  const url =  protocol + "://" + ipAddress + ":" + port + entryPoint
+
+  function next(){
+    setTimeout(() => {
+      useAutoUpdater(getMainData,setMainData)
+    },getMainData().network.updateInterval * 1000)
+  }
+
+  // ignore error because there are not grantee the user set correct netwrok infomation.
+  try{
+    let result = await fetch(url)
+    let JSONdata = await result.json()
+    setMainData({JSONdata: JSONdata})
+    next()
+  }catch(error){
+    console.log(error)
+    next()
+  }
+}
+
 function App() {
+  const getMainData = useMainData.getState
+  const setMainData = useMainData.setState
+
+  const init = useRef(true);
+  if(init.current){
+    useAutoUpdater(getMainData,setMainData)
+    init.current = false
+  }
+    
   return <div>
     <MainInfo></MainInfo>
     <Header></Header>
