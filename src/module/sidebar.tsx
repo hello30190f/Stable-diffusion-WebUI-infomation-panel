@@ -31,9 +31,10 @@ export function Sidebar(){
                     </div>
                     <div className="flex w-full flex-row">
                         <input 
-                            className="text-xl text-end font-bold" 
+                            className="text-xl w-full text-end font-bold" 
                             placeholder="Update interval." 
                             id="interval" type="number"
+                            min={0.3} max={2} step={0.1}
                             value={network.updateInterval}
                             onChange={(event:React.ChangeEvent<HTMLInputElement>) => {
                                 setMainData({
@@ -73,7 +74,7 @@ export function Sidebar(){
                         <input 
                             className="text-xl text-end font-bold" 
                             placeholder="Port number for the WebUI server." 
-                            id="port" type="number" step={1}
+                            id="port" type="number" step={1} min={0}
                             value={network.port}
                             onChange={(event:React.ChangeEvent<HTMLInputElement>) => {
                                 setMainData({
