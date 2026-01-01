@@ -103,7 +103,9 @@ async function useAutoUpdater(
   }catch(error){
     // suppress the error because it's too heavy make that browser console slow or unusable to outputing the error message when the connection can't be established.
     // console.log(error)
-    next()
+    setTimeout(() => {
+      next()
+    },3 * 1000)
   }
 }
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useMainData } from "../App"
-
+import brokenImage from "../assets/brokenimage.png"
 
 
 export function ImagePreview(){
@@ -8,8 +8,10 @@ export function ImagePreview(){
     const horizontalStyle = " w-[50%] h-full"
 
     const screenOrientation = useMainData((s) => s.screenOrientation)
+    const APIresponse = useMainData((s) => s.JSONdata)
     
-    const [style,setStyle] = useState("ImagePreveiw bg-gray-600" + horizontalStyle)
+    const [imageURL,setImageURL] = useState(brokenImage)
+    const [style,setStyle] = useState("ImagePreveiw flex justify-center" + horizontalStyle)
 
     useEffect(() => {
         if(screenOrientation == "Horizontal"){
@@ -34,10 +36,23 @@ export function ImagePreview(){
     },[screenOrientation])
 
 
+    useEffect(() => {
+        if(APIresponse == null){
+            setImageURL(brokenImage)
+            return
+        }
 
-    
+        if(APIresponse.current_image == ""){
+            setImageURL(brokenImage)
+            return
+        }
+
+        setImageURL("data:image/png;base64," + APIresponse.current_image)
+    },[APIresponse])
 
     return <div className={style}>
-
+        <div className="w-full h-full m-4 flex justify-center" style={{alignItems:"center"}}>
+            <img className="w-full h-fit" src={imageURL}></img>
+        </div>
     </div>
 }
