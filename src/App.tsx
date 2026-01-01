@@ -3,7 +3,8 @@ import { create }   from 'zustand'
 import { Header }   from './module/header'
 import { MainInfo } from './module/mainInfo'
 import { Sidebar }  from './module/sidebar'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
+import { readSettings, saveSettings } from './module/helper'
 
 // https://domain.name.or.ip.address/sdapi/v1/progress
 // {
@@ -44,7 +45,7 @@ type StableDiffusionWebUIapiJSON = {
 }
 
 
-type MainData = {
+export type MainData = {
   JSONdata        : StableDiffusionWebUIapiJSON | null,   // automaticly update 
   sidebar         : boolean,                              // false -> close, true -> open
   view            : string,                                // "main" or "raw" -> change text info
@@ -70,7 +71,6 @@ export const useMainData = create<MainData>(() => ({
   }
 }))
 
-// 
 async function useAutoUpdater(
   getMainData: () => MainData,
   setMainData: {
@@ -91,27 +91,45 @@ async function useAutoUpdater(
     },getMainData().network.updateInterval * 1000)
   }
 
-  // ignore error because there are not grantee the user set correct netwrok infomation.
+  // ignore error because there are not grantee the user set correct netwrok infomation while try to poll the infomation.
   try{
     let result = await fetch(url)
     let JSONdata = await result.json()
     setMainData({JSONdata: JSONdata})
     next()
   }catch(error){
-    console.log(error)
+    // suppress the error because it's too heavy make that browser console slow or unusable to outputing the error message when the connection can't be established.
+    // console.log(error)
     next()
   }
 }
 
+
 function App() {
   const getMainData = useMainData.getState
   const setMainData = useMainData.setState
+  const netwrok = useMainData((s) => s.network)
 
   const init = useRef(true);
   if(init.current){
+    // begin polling
     useAutoUpdater(getMainData,setMainData)
+
+    // use saved setting if it does exist.
+    const settings = readSettings()
+    if(settings != null){
+      setMainData({network:settings})
+    }else{
+      // when settings does not exist, save the default settings.
+      saveSettings(getMainData())
+    }    
     init.current = false
   }
+
+  // save settings if any changes are made.
+  useEffect(() => {
+    saveSettings(getMainData())
+  },[netwrok])
     
   return <div>
     <MainInfo></MainInfo>
