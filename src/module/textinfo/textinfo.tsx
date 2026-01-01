@@ -41,9 +41,26 @@ export function TextInfo(){
     },[screenOrientation])
 
     function Item({children,title}:{children:JSX.Element ,title:string}){
-        return <div className="TextInfoItem m-6 w-[20rem]">
+        return <div className="TextInfoItem m-8 w-[20rem]">
             <div className="title text-3xl font-bold text-start border-b-solid border-b-[3px] border-b-black">{title}</div>
-            <div className="detail text-xl text-end">
+            <div className="detail h-[2rem] mt-2 text-xl text-end">
+                {children}
+            </div>
+        </div>
+    }
+
+    function ProgressBar({children,rate}:{children:JSX.Element, rate:number}){
+
+        const progressBarStyle = {
+            width: String(Math.floor(rate*100)) + "%"
+        }
+
+        return <div className="relative h-[2rem]">
+            <div className="absolute progressBarBackground w-full h-[2rem] opacity-[0.5]">
+                <div className="absolute progress h-full w-full rounded-[4px] bg-green-700" style={progressBarStyle}></div>
+                <div className="entire w-full h-full rounded-[4px] bg-gray-950"></div>
+            </div>
+            <div className="container absolute h-[2rem]">
                 {children}
             </div>
         </div>
@@ -59,9 +76,11 @@ export function TextInfo(){
     return <div className={style}>
         <div className="container w-fit h-fit">
             <Item title="Progress">
-                <div className="">
-                    {APIresponse ? String(Math.floor(APIresponse.progress*100)) + " %" : errorMessage}
-                </div>
+                <ProgressBar rate={APIresponse ? APIresponse.progress : 0}>
+                    <div className="">
+                        {APIresponse ? String(Math.floor(APIresponse.progress*100)) + " %" : errorMessage}
+                    </div>
+                </ProgressBar>
             </Item>
             <Item title="ETA">
                 <div className="">
@@ -69,14 +88,18 @@ export function TextInfo(){
                 </div>
             </Item>
             <Item title="Sampling Step">
-                <div className="">
-                    {APIresponse ? String(APIresponse.state.sampling_step) + " / " + String(APIresponse.state.sampling_steps) : errorMessage}                    
-                </div>
+                <ProgressBar rate={APIresponse ? 1.0 * APIresponse.state.sampling_step / APIresponse.state.sampling_steps : 0}>
+                    <div className="">
+                        {APIresponse ? String(APIresponse.state.sampling_step) + " / " + String(APIresponse.state.sampling_steps) : errorMessage}                    
+                    </div>
+                </ProgressBar>
             </Item>
             <Item title="Batch Job">
-                <div className="">
-                    {APIresponse ? String(APIresponse.state.job_no) + " / " + String(APIresponse.state.job_count) : errorMessage}                                        
-                </div>
+                <ProgressBar rate={APIresponse ? 1.0 * APIresponse.state.job_no / APIresponse.state.job_count : 0}>
+                    <div className="">
+                        {APIresponse ? String(APIresponse.state.job_no) + " / " + String(APIresponse.state.job_count) : errorMessage}                                        
+                    </div>
+                </ProgressBar>
             </Item>
         </div>
     </div>

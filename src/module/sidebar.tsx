@@ -34,7 +34,7 @@ export function Sidebar(){
                             className="text-xl w-full text-end font-bold" 
                             placeholder="Update interval." 
                             id="interval" type="number"
-                            min={0.3} max={2} step={0.1}
+                            min={0.03} max={2} step={0.01}
                             value={network.updateInterval}
                             onChange={(event:React.ChangeEvent<HTMLInputElement>) => {
                                 setMainData({

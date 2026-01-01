@@ -42,7 +42,7 @@ export function ImagePreview(){
             return
         }
 
-        if(APIresponse.current_image == ""){
+        if(APIresponse.current_image == "" ||  APIresponse.current_image == "null"){
             setImageURL(brokenImage)
             return
         }

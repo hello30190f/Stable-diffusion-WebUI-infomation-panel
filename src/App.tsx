@@ -99,7 +99,6 @@ async function useAutoUpdater(
     let result = await fetch(url)
     let JSONdata = await result.json()
     setMainData({JSONdata: structuredClone(JSONdata)})
-    console.log(JSONdata)
     next()
   }catch(error){
     // suppress the error because it's too heavy make that browser console slow or unusable to outputing the error message when the connection can't be established.
