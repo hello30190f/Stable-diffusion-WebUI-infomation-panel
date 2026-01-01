@@ -63,11 +63,12 @@ export const useMainData = create<MainData>(() => ({
   sidebar         : false,
   view            : "main",
   entryPointPath  : "/sdapi/v1/progress",
+  // try to connect local WebUI by default.
   network:{
     updateInterval  : 1.0 / 2, // 2 FPS 
     ipAddress       : "localhost",
     port            : 7860,
-    protocol        : "https"
+    protocol        : "http"
   }
 }))
 
