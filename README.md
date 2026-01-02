@@ -12,8 +12,8 @@
 
 
 # How to use
-## Allow CORS
-### WebUI itself(if needed)
+## 1. Allow CORS
+### WebUI itself (if needed)
 /etc/stable-diffusion-webui/webui.conf
 ```
 ACCELERATE_FLAGS="--num_cpu_threads_per_process=6"
@@ -25,7 +25,7 @@ DATA_DIR="/your/path/to/the/data/for/stable/diffusion"
 If you have no error on the WebUI log about GET requests this frontend made, the WebUI probably has already been working and returned API responses but got blocked somewhere else. In my case, httpd block the API responses without CORS configuration.
 
 ### Allow CORS on HTTPD Virtual Host
-This is example of `/etc/httpd/conf/extra/httpd-vhosts.conf`.
+This is an example of `/etc/httpd/conf/extra/httpd-vhosts.conf`.
 ```conf
 <VirtualHost *:443>
 	ServerName your.server.name
@@ -56,11 +56,20 @@ This is example of `/etc/httpd/conf/extra/httpd-vhosts.conf`.
 
 
 
+## 2. Open the frontend
+### execute binrary
 
 
+### build your own
+####
+```
+npm install
+npm run dev
+```
 
-## Open the frontend
-
+## Put your WebUI settings
+If you use WebUI with the default settings on localhost, you might not have to set this setting. By default, this frontend try to connect the server on localhost:7860.
+![NetworkSettingUI](./readme/NetworkSettingUI.png)
 
 
 
