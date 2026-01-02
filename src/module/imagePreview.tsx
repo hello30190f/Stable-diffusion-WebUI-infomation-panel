@@ -51,8 +51,8 @@ export function ImagePreview(){
     },[APIresponse])
 
     return <div className={style}>
-        <div className="w-full h-full m-4 flex justify-center" style={{alignItems:"center"}}>
-            <img className="w-full h-fit" src={imageURL}></img>
+        <div className="w-full h-full flex justify-center" style={{alignItems:"center"}}>
+            <img className="max-w-full max-h-full" src={imageURL}></img>
         </div>
     </div>
 }
