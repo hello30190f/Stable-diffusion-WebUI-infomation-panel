@@ -123,6 +123,4 @@ export function Sidebar(){
                 </div>
             </div>
         </div>
-    else
-        return <div></div>
 }
