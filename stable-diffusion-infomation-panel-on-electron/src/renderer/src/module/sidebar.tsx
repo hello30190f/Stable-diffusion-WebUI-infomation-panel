@@ -1,0 +1,128 @@
+import { useMainData } from "../App"
+
+
+export function Sidebar(){
+    const sidebar = useMainData((s) => s.sidebar)
+    const setMainData = useMainData.setState
+    const network = useMainData((s) => s.network)
+
+    const protocolSelectedStyle = {
+        http:{
+            opacity: "1"
+        },
+        https:{
+            opacity: "1"
+        }
+    }
+
+    if(network.protocol == "http"){
+        protocolSelectedStyle.http.opacity = "0.6"
+    }else{
+        protocolSelectedStyle.https.opacity = "0.6"
+    }
+
+    if(sidebar)
+        return <div className="sidebar fixed top-0 left-0 h-screen min-w-[10rem] bg-gray-900">
+            <div className="settings text-3xl font-bold pt-6 pl-1 text-start">Network Settings:</div>
+            <div className="detail m-2">
+                <div className="Interval text-center m-2 p-2 rounded-2xl bg-gray-800">
+                    <div className="explain text-start ml-2 text-xl font-bold">
+                        Update Interval
+                    </div>
+                    <div className="flex w-full flex-row">
+                        <input 
+                            className="text-xl w-full text-end font-bold" 
+                            placeholder="Update interval." 
+                            id="interval" type="number"
+                            min={0.03} max={2} step={0.01}
+                            value={network.updateInterval}
+                            onChange={(event:React.ChangeEvent<HTMLInputElement>) => {
+                                setMainData({
+                                    network:{
+                                        ...network,
+                                        updateInterval: Number(event.target.value)
+                                    }
+                                })
+                            }}
+                            ></input>
+                        <div className="text-xl font-bold">sec</div>
+                    </div>
+                </div>
+                <div className="Address text-center m-2 p-2 rounded-2xl bg-gray-800">
+                    <div className="explain text-start ml-2 text-xl font-bold">
+                        IP Address
+                    </div>
+                        <input 
+                            className="text-xl text-end font-bold" 
+                            placeholder="IP Adddres for the WebUI server." 
+                            id="ipaddress" type="text"
+                            value={network.ipAddress}
+                            onChange={(event:React.ChangeEvent<HTMLInputElement>) => {
+                                setMainData({
+                                    network:{
+                                        ...network,
+                                        ipAddress: event.target.value
+                                    }
+                                })
+                            }}
+                            ></input>
+                </div>
+                <div className="Port text-center m-2 p-2 rounded-2xl bg-gray-800">
+                    <div className="explain text-start ml-2 text-xl font-bold">
+                        Port
+                    </div>
+                        <input 
+                            className="text-xl text-end font-bold" 
+                            placeholder="Port number for the WebUI server." 
+                            id="port" type="number" step={1} min={0}
+                            value={network.port}
+                            onChange={(event:React.ChangeEvent<HTMLInputElement>) => {
+                                setMainData({
+                                    network:{
+                                        ...network,
+                                        port: Number(event.target.value)
+                                    }
+                                })
+                            }}
+                            ></input>
+                </div>
+                <div className="Port text-center m-2 p-2 rounded-2xl bg-gray-800">
+                    <div className="explain text-start ml-2 text-xl font-bold">
+                        Protocol
+                    </div>
+                    <div className="flex flex-row justify-center" id="protocol">
+                        <div 
+                            style={protocolSelectedStyle.http} 
+                            className="http text-xl rounded-xl hover:opacity-[0.2] text-center font-bold w-[8rem] p-2 m-2 bg-gray-600 mr-[1rem]"
+                            onClick={() => {
+                                if(network.protocol != "http"){
+                                    setMainData({
+                                        network:{
+                                            ...network,
+                                            protocol: "http"
+                                        }
+                                    })
+                                }
+                            }}
+                            >http</div>
+                        <div 
+                            style={protocolSelectedStyle.https} 
+                            className="https text-xl rounded-xl hover:opacity-[0.2] text-center font-bold w-[8rem] p-2 m-2 bg-gray-600"
+                            onClick={() => {
+                                if(network.protocol != "https"){
+                                    setMainData({
+                                        network:{
+                                            ...network,
+                                            protocol: "https"
+                                        }
+                                    })
+                                }
+                            }}
+                            >https</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    else
+        return <div></div>
+}

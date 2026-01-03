@@ -1,0 +1,27 @@
+import { useMainData } from "../App"
+import icon from "../assets/favicon.svg"
+
+export function Header(){
+    const setMainData = useMainData.setState
+    const sidebar = useMainData((s) => s.sidebar)
+
+
+    return <div 
+            className="header fixed top-0 left-0 w-screen h-[5rem] bg-gray-950"
+            onClick={(event:React.MouseEvent<HTMLDivElement>) => {
+                if(sidebar && event.currentTarget.className.includes("header")) 
+                    setMainData({sidebar:false})
+            }}
+            >
+            <img 
+                className="h-[5rem] hover:opacity-[0.5]" 
+                draggable={false} src={icon}
+                onClick={() => {
+                    setMainData({
+                        sidebar: true
+                    })
+                }}
+                ></img>
+                
+    </div>  
+}
