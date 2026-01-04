@@ -74,7 +74,7 @@ export function TextInfo(){
                                     : null
 
     return <div className={style}>
-        <div className="container w-fit h-fit">
+        <div className="container w-fit h-fit flex flex-col">
             <Item title="Progress">
                 <ProgressBar rate={APIresponse ? APIresponse.progress : 0}>
                     <div className="">
