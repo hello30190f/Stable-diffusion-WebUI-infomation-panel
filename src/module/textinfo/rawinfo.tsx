@@ -36,6 +36,6 @@ export function RawInfo(){
 
 
     return <div className={style}>
-        {JSON.stringify(APIresponse)}
+        {JSON.stringify(APIresponse,null,4)}
     </div>
 }

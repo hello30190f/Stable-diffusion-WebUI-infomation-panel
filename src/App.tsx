@@ -48,9 +48,10 @@ type StableDiffusionWebUIapiJSON = {
 export type MainData = {
   JSONdata            : StableDiffusionWebUIapiJSON | null,   // automaticly update 
   sidebar             : boolean,                              // false -> close, true -> open
-  view                : string,                                // "main" or "raw" -> change text info
+  view                : string,                               // "main" or "raw" -> change text info
   entryPointPath      : string,
-  screenOrientation   : "Vertical" | "Horizontal"
+  screenOrientation   : "Vertical" | "Horizontal",
+  connection          : boolean                               // true -> ok, false -> disconnected
   network:{
     updateInterval  : number, // sec
     ipAddress       : string, 
@@ -65,6 +66,7 @@ export const useMainData = create<MainData>(() => ({
   view              : "main",
   screenOrientation : "Horizontal",
   entryPointPath    : "/sdapi/v1/progress",
+  connection        : false,
   // try to connect local WebUI by default.
   network:{
     updateInterval  : 1.0 / 2, // 2 FPS 
@@ -85,6 +87,7 @@ async function useAutoUpdater(
   const ipAddress   = getMainData().network.ipAddress
   const port        = String(getMainData().network.port)
   const entryPoint  = getMainData().entryPointPath
+  const connection  = getMainData().connection
 
   const url =  protocol + "://" + ipAddress + ":" + port + entryPoint
 
@@ -99,10 +102,12 @@ async function useAutoUpdater(
     let result = await fetch(url)
     let JSONdata = await result.json()
     setMainData({JSONdata: structuredClone(JSONdata)})
+    if(!connection) setMainData({connection: true})
     next()
   }catch(error){
     // suppress the error because it's too heavy make that browser console slow or unusable to outputing the error message when the connection can't be established.
     // console.log(error)
+    if(connection) setMainData({connection: false})
     setTimeout(() => {
       next()
     },3 * 1000)

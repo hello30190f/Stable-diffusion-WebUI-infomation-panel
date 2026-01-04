@@ -2,12 +2,15 @@ import { useMainData } from "../App"
 import icon from "../assets/favicon.svg"
 
 export function Header(){
-    const setMainData = useMainData.setState
-    const sidebar = useMainData((s) => s.sidebar)
+    const setMainData   = useMainData.setState
+    const sidebar       = useMainData((s) => s.sidebar)
+    const connection    = useMainData((s) => s.connection)
 
+    let headerClassName = "header fixed top-0 left-0 w-screen h-[5rem] bg-gray-950 "
+    headerClassName += connection ? "bg-gray-950" : "bg-red-950"
 
     return <div 
-            className="header fixed top-0 left-0 w-screen h-[5rem] bg-gray-950"
+            className={headerClassName}
             onClick={(event:React.MouseEvent<HTMLDivElement>) => {
                 if(sidebar && event.currentTarget.className.includes("header")) 
                     setMainData({sidebar:false})
@@ -22,6 +25,8 @@ export function Header(){
                     })
                 }}
                 ></img>
+
+            
                 
     </div>  
 }
