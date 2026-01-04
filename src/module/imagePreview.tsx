@@ -52,7 +52,7 @@ export function ImagePreview(){
 
     return <div className={style}>
         <div className="w-full h-full flex justify-center" style={{alignItems:"center"}}>
-            <img width={10000} height={10000} className="max-w-full max-h-full" src={imageURL}></img>
+            <img className="max-w-full max-h-full" src={imageURL}></img>
         </div>
     </div>
 }
