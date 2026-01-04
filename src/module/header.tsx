@@ -6,8 +6,8 @@ export function Header(){
     const sidebar       = useMainData((s) => s.sidebar)
     const connection    = useMainData((s) => s.connection)
 
-    let headerClassName = "header fixed top-0 left-0 w-screen h-[5rem] bg-gray-950 "
-    headerClassName += connection ? "bg-gray-950" : "bg-red-950"
+    let headerClassName = "header fixed top-0 left-0 w-screen h-[5rem] "
+    headerClassName += connection ? " bg-gray-950 " : " bg-red-950 "
 
     return <div 
             className={headerClassName}
