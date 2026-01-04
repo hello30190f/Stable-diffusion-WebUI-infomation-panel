@@ -69,7 +69,7 @@ export function TextInfo(){
     const errorMessage = "Unable to get the Infomation"
     const ETAtimeString = APIresponse ? 
                                     String(Math.floor(APIresponse.eta_relative / 3600.0)).padStart(2,"0") + "h " + 
-                                    String(Math.floor(APIresponse.eta_relative / 60)).padStart(2,"0") + "min " + 
+                                    String(Math.floor(APIresponse.eta_relative / 60 % 60)).padStart(2,"0") + "min " + 
                                     String(Math.floor(APIresponse.eta_relative % 60)).padStart(2,"0") + "sec"                               
                                     : null
 
