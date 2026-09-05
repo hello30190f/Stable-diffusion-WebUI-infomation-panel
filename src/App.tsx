@@ -147,7 +147,8 @@ function App() {
         setMainData({screenOrientation:result})
       }
     }
-
+    
+    updateScreenInfo()
     addEventListener("resize",updateScreenInfo)
     return () => {
       removeEventListener("resize",updateScreenInfo)

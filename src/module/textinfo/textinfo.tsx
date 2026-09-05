@@ -41,7 +41,16 @@ export function TextInfo(){
     },[screenOrientation])
 
     function Item({children,title}:{children:JSX.Element ,title:string}){
-        return <div className="TextInfoItem m-8 w-[20rem]">
+        const screenOrientation = useMainData().screenOrientation
+
+        let style = "TextInfoItem w-[20rem] "
+        if(screenOrientation == "Horizontal"){
+            style += "m-8"
+        }else{
+            style += "m-1"
+        }
+
+        return <div className={style}>
             <div className="title text-3xl font-bold text-start border-b-solid border-b-[3px] border-b-black">{title}</div>
             <div className="detail h-[2rem] mt-2 text-xl text-end">
                 {children}
