@@ -50,7 +50,7 @@ export function Sidebar(){
                 </div>
                 <div className="Address text-center m-2 p-2 rounded-2xl bg-gray-800">
                     <div className="explain text-start ml-2 text-xl font-bold">
-                        IP Address
+                        IP Address / URL
                     </div>
                         <input 
                             className="text-xl text-end font-bold" 
