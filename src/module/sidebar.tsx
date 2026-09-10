@@ -61,7 +61,7 @@ export function Sidebar(){
                                 setMainData({
                                     network:{
                                         ...network,
-                                        ipAddress: event.target.value
+                                        ipAddress: event.target.value.replaceAll("/","").replaceAll("https:","").replaceAll("http:","")
                                     }
                                 })
                             }}
