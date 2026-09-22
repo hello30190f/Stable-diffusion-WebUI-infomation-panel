@@ -62,7 +62,7 @@ cd Stable-diffusion-WebUI-infomation-panel
 ```
 ### build your own
 #### Option 1: get HTML/CSS/JS bundle
- The bundle will located at `./dist` folder. Use the content as you intended. At least the bundle need to be distributed via your web server to use.
+ The bundle will be located at `./dist` folder. Use the content as you intended. At least the bundle need to be distributed via your web server to use.
 ```bash
 npm install	
 npm run build
