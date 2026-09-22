@@ -1,5 +1,3 @@
-# Still Not Finished to implement.
-
 # Stable diffusion webui infomation panel
  While i use Stable diffusion WebUI from [AUR (en) - stable-diffusion-webui](https://www.nyanmo.info/posts/linux/stablediffusionwebui/). That works but i find that i can't see the progress when i accidentally close the WebUI. Later, i find an entry point "/sdapi/v1/progress" that return JSON response about the progress. So i decided to create my own progress viewer rely on the API possibly disappear in the future.
 
@@ -57,19 +55,55 @@ This is an example of `/etc/httpd/conf/extra/httpd-vhosts.conf`.
 
 
 ## 2. Open the frontend
-### execute binrary
-
-
+### clone this repo
+```bash
+git clone https://github.com/hello30190f/Stable-diffusion-WebUI-infomation-panel.git
+cd Stable-diffusion-WebUI-infomation-panel
+```
 ### build your own
-####
+#### Option 1: get HTML/CSS/JS bundle
+ The bundle will located at `./dist` folder. Use the content as you intended. At least the bundle need to be distributed via your web server to use.
+```bash
+npm install	
+npm run build
 ```
+#### Option 2: use this anyway
+ Access to `http://localhost:5173/` on your web browser.
+```bash
 npm install
-npm run dev
+npm run dev	
+
+# npm notice run stable-diffusion-infomation-panel@0.0.0 dev
+# npm notice run vite
+# (node:190864) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+# (Use `node --trace-deprecation ...` to show where the warning was created)
+# 
+#   VITE v7.3.0  ready in 295 ms
+# 
+#   ➜  Local:   http://localhost:5173/
+#   ➜  Network: use --host to expose
+#   ➜  press h + enter to show help
 ```
 
-## Put your WebUI settings
-If you use WebUI with the default settings on localhost, you might not have to set this setting. By default, this frontend try to connect the server on localhost:7860.
+## Set your WebUI settings (Optional)
+ If you use WebUI with the default settings on localhost, you might not have to set this setting. By default, this frontend try to connect the server on localhost:7860.
 ![NetworkSettingUI](./readme/NetworkSettingUI.png)
+
+## Server side settings (Optional)
+ You can place default settings at your server root. The example shown below.
+```json
+{
+    "useSetting": true,
+    "network":{
+        "updateInterval"  : 0.5,
+        "ipAddress"       : "test.domain", 
+        "port"            : 443, 
+        "protocol"        : "https"
+    }
+}
+```
+
+
 
 
 
