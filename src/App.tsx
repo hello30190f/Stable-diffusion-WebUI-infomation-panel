@@ -120,19 +120,23 @@ function App() {
   const setMainData = useMainData.setState
   const netwrok = useMainData((s) => s.network)
 
-  const init = useRef(true);
-  if(init.current){
-    // begin polling
-    useAutoUpdater(getMainData,setMainData)
-
+  async function initSetting(){
     // use saved setting if it does exist.
-    const settings = readSettings()
+    const settings = await readSettings()
     if(settings != null){
       setMainData({network:settings})
     }else{
       // when settings does not exist, save the default settings.
       saveSettings(getMainData())
     }    
+  }
+
+  const init = useRef(true);
+  if(init.current){
+    // begin polling
+    useAutoUpdater(getMainData,setMainData)
+
+    initSetting()
     init.current = false
   }
 

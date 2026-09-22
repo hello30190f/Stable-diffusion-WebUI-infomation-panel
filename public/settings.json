@@ -1,0 +1,9 @@
+{
+    "useSetting": false,
+    "network":{
+        "updateInterval"  : 0.5,
+        "ipAddress"       : "test.domain", 
+        "port"            : 443, 
+        "protocol"        : "https"
+    }
+}
