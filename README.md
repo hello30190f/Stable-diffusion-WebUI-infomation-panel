@@ -90,7 +90,7 @@ npm run dev
 ![NetworkSettingUI](./readme/NetworkSettingUI.png)
 
 ## Server side settings (Optional)
- You can place default settings at your server root. The example shown below.
+ You can place default settings at your server root as `settings.json`. The example shown below.
 ```json
 {
     "useSetting": true,
